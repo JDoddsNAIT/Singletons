@@ -20,14 +20,14 @@ Follow the instructions below to install using the Unity Package Manager.
 3. Click the '+' icon, and select "Install package from git URL"
 4. Copy and paste in the link below, then click "Install".
 ```
-git+https://github.com/JDoddsNAIT/Singletons.git#upm-v1.0.0
+git+https://github.com/JDoddsNAIT/Singletons.git#v1.0.0
 ``` 
 
 ## Manual
 
 Manual instalation is recommended as it gives you free reign to modify anything within the package for your own use cases.
 
-1. Download the latest [.unitypackage release](https://github.com/JDoddsNAIT/Singletons/releases).
+1. Download the `.unitypackage` file under the [latest release](https://github.com/JDoddsNAIT/Singletons/releases).
 2. Open your Unity project.
 3. Open 'Assets -> Import Package -> Custom Package...'
 4. Locate and select the downloaded file from step 1.
