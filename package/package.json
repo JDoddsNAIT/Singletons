@@ -8,7 +8,7 @@
     "name": "Jonathan Dodds",
     "url": "https://github.com/JDoddsNAIT"
   },
-  "documentationUrl": "https://github.com/JDoddsNAIT/Singletons",
-  "licensesUrl": "https://github.com/JDoddsNAIT/Singletons/blob/main/LICENSE",
-  "changelogUrl": "https://github.com/JDoddsNAIT/Singletons/blob/main/CHANGELOG.md"
+  "documentationUrl": "https://github.com/JDoddsNAIT/Singletons/blob/main/package/Documentation/SingletonsDocumentation.md",
+  "licensesUrl": "https://github.com/JDoddsNAIT/Singletons/blob/main/package/LICENSE",
+  "changelogUrl": "https://github.com/JDoddsNAIT/Singletons/blob/main/package/CHANGELOG.md"
 }
