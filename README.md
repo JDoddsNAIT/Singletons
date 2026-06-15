@@ -7,9 +7,15 @@ This singletons package provides a more robust solution with configurable behavi
 
 # Installation
 
-## Unity Asset Store
+## Manual (Recommended)
 
-Click [here]() to install from the Unity Asset Store. (Coming soon!)
+Manual installation is recommended as it gives you free reign to modify anything within the package for your own use cases, with the added bonus of not being restricted by Unity's license agreement.
+
+1. Download the `.unitypackage` file under the [latest release](https://github.com/JDoddsNAIT/Singletons/releases).
+2. Open your Unity project.
+3. Open 'Assets -> Import Package -> Custom Package...'
+4. Locate and select the downloaded file from step 1.
+5. Click "Import"
 
 ## Unity Package Manager (UPM)
 
@@ -23,12 +29,6 @@ Follow the instructions below to install using the Unity Package Manager.
 git+https://github.com/JDoddsNAIT/Singletons.git#v1.0.0
 ``` 
 
-## Manual
+## Unity Asset Store
 
-Manual instalation is recommended as it gives you free reign to modify anything within the package for your own use cases.
-
-1. Download the `.unitypackage` file under the [latest release](https://github.com/JDoddsNAIT/Singletons/releases).
-2. Open your Unity project.
-3. Open 'Assets -> Import Package -> Custom Package...'
-4. Locate and select the downloaded file from step 1.
-5. Click "Import"
+Click [here]() to install from the Unity Asset Store. (Coming soon!)
