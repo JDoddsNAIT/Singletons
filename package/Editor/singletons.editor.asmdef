@@ -2,7 +2,7 @@
     "name": "singletons.editor",
     "rootNamespace": "Singletons.Editor",
     "references": [
-        "GUID:90b6f98eeac0a7144aa12d4e4a7ed32a"
+        "singletons.runtime"
     ],
     "includePlatforms": [
         "Editor"
