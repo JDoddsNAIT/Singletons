@@ -26,7 +26,7 @@ Follow the instructions below to install using the Unity Package Manager.
 3. Click the '+' icon, and select "Install package from git URL"
 4. Copy and paste in the link below, then click "Install".
 ```
-git+https://github.com/JDoddsNAIT/Singletons.git#v1.0.0
+git+https://github.com/JDoddsNAIT/Singletons.git#v1.1.0
 ``` 
 
 ## Unity Asset Store
