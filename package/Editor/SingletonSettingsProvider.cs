@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.Properties;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -87,12 +88,20 @@ namespace Singletons.Editor
 			};
 			rootElement.Add(title);
 
+			var destroyMode = _serializedObject.FindProperty(nameof(SingletonProjectSettings._destroyOthersDuring));
+			var destroyModeField = new PropertyField(destroyMode) {
+				style = {
+					maxWidth = Length.Percent(50f),
+					marginBottom = vertical_spacing
+				}
+			};
+			rootElement.Add(destroyModeField);
+
 			var addTypeButton = new Button() {
 				name = "button__add-type",
 				text = text_add_type_button,
 				style = {
 					width = Length.Pixels(200f),
-					marginBottom = vertical_spacing,
 				}
 			};
 			rootElement.Add(addTypeButton);
@@ -105,10 +114,10 @@ namespace Singletons.Editor
 			};
 			rootElement.Add(dummy);
 
-			var defaultValues = _serializedObject.FindProperty("_defaultSettings");
+			var defaultValues = _serializedObject.FindProperty(nameof(SingletonProjectSettings._defaultSettings));
 			content.Add(CreateDefaultValuesField(defaultValues));
 
-			var settings = _serializedObject.FindProperty("_singletonSettings");
+			var settings = _serializedObject.FindProperty(nameof(SingletonProjectSettings._singletonSettings));
 			var path = PropertyPath.AppendName(default, settings.name);
 
 			for (int i = 0; i < settings.arraySize; i++) {
@@ -126,13 +135,23 @@ namespace Singletons.Editor
 
 			void AddTypeButton_clicked()
 			{
-				IEnumerable<Type> types = TypeCache.GetTypesDerivedFrom(typeof(Singleton<>));
+				IEnumerable<Type> types = TypeCache.GetTypesDerivedFrom(typeof(Singleton<>))
+					.Where(static type => typeof(Singleton<>).TryMakeGenericType(out _, type));
 				var menu = new AdvancedDropdownMenu(dropdown_menu_title) {
 					minimumSize = dropdown_minimum_size,
 				};
 				foreach (var type in types) {
+					bool valid;
+					try {
+						Type singletonType = typeof(Singleton<>).MakeGenericType(type);
+						valid = true;
+					}
+					catch (Exception) {
+						valid = false;
+					}
+
 					var content = new GUIContent(text: type.FullName.Replace('.', '/'));
-					bool enabled = !_singletonSettingsAsset.HasSettings_Internal(type);
+					bool enabled = valid && !_singletonSettingsAsset.HasSettings_Internal(type);
 					menu.AddItem(content, enabled, AddTypeSettings, userData: type);
 				}
 				menu.Show(addTypeButton.worldBound, dummy);
@@ -144,9 +163,9 @@ namespace Singletons.Editor
 				EditorUtility.SetDirty(_singletonSettingsAsset);
 				_serializedObject.Update();
 				content.Clear();
-				var defaultValues = _serializedObject.FindProperty("_defaultSettings");
+				//var defaultValues = _serializedObject.FindProperty("_defaultSettings");
 				content.Add(CreateDefaultValuesField(defaultValues));
-				var settings = _serializedObject.FindProperty("_singletonSettings");
+				//var settings = _serializedObject.FindProperty("_singletonSettings");
 				for (int i = 0; i < settings.arraySize; i++) {
 					var element = settings.GetArrayElementAtIndex(i);
 					var field = CreateSettingsField(element, defaultValues);

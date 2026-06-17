@@ -11,6 +11,7 @@ namespace Singletons
 
 		[NonSerialized] internal Dictionary<string, int> _indexMap = null;
 
+		[SerializeField] internal DestroyOthersMode _destroyOthersDuring = DestroyOthersMode.RuntimeOnly;
 		[SerializeField] internal SingletonFlags _defaultSettings;
 		[SerializeField] internal List<SingletonSettings> _singletonSettings = new();
 
@@ -26,6 +27,20 @@ namespace Singletons
 		}
 
 		public void Clean() => _singletonSettings.RemoveAll(static x => Type.GetType(x.type) == null);
+
+		public static bool DestroyAtRuntime()
+		{
+			if (_main == null)
+				_main = GetOrCreate();
+			return _main._destroyOthersDuring.Runtime();
+		}
+
+		public static bool DestroyInEditor()
+		{
+			if (_main == null)
+				_main = GetOrCreate();
+			return _main._destroyOthersDuring.Editor();
+		}
 
 		public static void AddSettingsForType(Type type)
 		{
@@ -105,6 +120,24 @@ namespace Singletons
 				result = CreateInstance<SingletonProjectSettings>();
 			}
 			return result;
+		}
+	}
+
+	internal enum DestroyOthersMode
+	{
+		EditorAndRuntime = 0, RuntimeOnly = 1, EditorOnly = 2
+	}
+
+	internal static partial class Utilities
+	{
+		public static bool Runtime(this DestroyOthersMode mode)
+		{
+			return Application.isPlaying && mode is DestroyOthersMode.EditorAndRuntime or DestroyOthersMode.RuntimeOnly;
+		}
+
+		public static bool Editor(this DestroyOthersMode mode)
+		{
+			return !Application.isPlaying && mode is DestroyOthersMode.EditorAndRuntime or DestroyOthersMode.EditorOnly;
 		}
 	}
 }

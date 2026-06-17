@@ -16,6 +16,7 @@ namespace Singletons
 			instance_overridden_message = "The main instance {0} has been overridden.",
 			instance_destroyed_message = "The instance {0} has been destroyed.",
 			invalid_instance_message = "No {0} component was found on the generated object. Did you forget to add the component to the root of the prefab?",
+			instance_assigned_message = "{0} has been assigned to the main instance of {1}.",
 
 			instance_name_format = "{0} (Auto-Generated)";
 
@@ -68,45 +69,48 @@ namespace Singletons
 			return instance;
 		}
 
-		/// <summary>
-		/// Attempts to set <paramref name="value"/> as the main instance.
-		/// </summary>
-		/// <param name="value"></param>
-		public static void SetInstance([AllowNull] T value)
+		internal static void SetInstance([AllowNull] T value, bool forced = false)
 		{
 			if (_main == value)
 				return;
 
 			if (_main != null) {
-				if (Settings.HasFlag(SingletonFlags.OverrideExisting)) {
+				if (forced || Settings.HasFlag(SingletonFlags.OverrideExisting)) {
 					Debug.LogFormat(context: value, instance_overridden_message, _main);
 					DestroyInstance(_main);
-				} else {
+				} else if (value != null) {
 					DestroyInstance(value);
 					return;
 				}
 			}
 			_main = value;
+			Debug.LogFormat(value, instance_assigned_message, (value == null ? "Null" : value), type);
 			if (value == null)
 				return;
 
-			if (Settings.HasFlag(SingletonFlags.Persistent)) {
+			if (Settings.HasFlag(SingletonFlags.Persistent) && Application.isPlaying) {
 				value.transform.SetParent(null);
 				DontDestroyOnLoad(value.gameObject);
 			}
 			_main.Initialize();
 		}
 
+		/// <summary>
+		/// Attempts to set <paramref name="value"/> as the main instance.
+		/// </summary>
+		/// <param name="value"></param>
+		public static void SetInstance([AllowNull] T value) => SetInstance(value, false);
+
 		protected static void DestroyInstance(T instance)
 		{
-			if (!Settings.HasFlag(SingletonFlags.DestroyOthers))
+			if (!Settings.HasFlag(SingletonFlags.DestroyOthers) || instance == null)
 				return;
 
 			Debug.LogFormat(instance_destroyed_message, instance);
-			if (Application.isPlaying)
-				Destroy(instance);
-			else
-				DestroyImmediate(instance);
+			if (SingletonProjectSettings.DestroyAtRuntime())
+				Destroy(instance.gameObject);
+			else if (SingletonProjectSettings.DestroyInEditor())
+				DestroyImmediate(instance.gameObject);
 		}
 
 		/// <summary>

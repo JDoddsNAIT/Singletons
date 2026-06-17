@@ -6,6 +6,8 @@
 	- [Unity Package Manager (UPM)](#unity-package-manager-upm)
 	- [Unity Asset Store](#unity-asset-store)
 - [Usage](#usage)
+	- [Project Settings](#project-settings)
+	- [Debugger](#debugger)
 - [Technical Details](#technical-details)
 	- [Known Limitations](#known-limitations)
 	- [Requirements](#requirements)
@@ -38,7 +40,7 @@ Follow the instructions below to install using the Unity Package Manager.
 3. Click the '+' icon, and select "Install package from git URL"
 4. Copy and paste in the link below, then click "Install".
 ```
-git+https://github.com/JDoddsNAIT/Singletons.git#v1.0.0
+git+https://github.com/JDoddsNAIT/Singletons.git#v1.1.0
 ``` 
 
 ## Unity Asset Store
@@ -72,12 +74,16 @@ public class MyClass : Singleton<MyClass>
 	// Script code goes here
 }
 ```
-The `Initialize()` method is called whenever that instance is set as the Main instance. Typically, this only happens once on `Awake()`, or not at all if a Main instance already exists and `Override Existing` is set to false.
+The `Initialize()` method is called whenever that instance is set as the Main instance. Typically, this only happens once on `Awake()`, or not at all if a Main instance already exists and "Override Existing" is set to false.
+
+## Project Settings
 
 You can configure the behaviour of singletons by going to `Edit > Project Settings > Singletons`.
 Here you can also configure the default settings that apply to all types not shown in the settings, and any types with "Use Default Settings" checked.
 
 ![project settings](images/project_settings.png)
+
+The "Destroy Others During" field is used configure if singletons will only be destroyed automaticaly at runtime, in the editor, or both.
 
 All singleton types will appear in the settings after being added to any object in the scene. 
 However if the script you're looking for does not appear in the settings, click the "Add Type" button and select the script type from the dropdown menu.
@@ -93,6 +99,18 @@ However, you can change this behaviour using the following options:
 - **Auto-Generation**: When the `GetInstance()` method is called and no main instance exists, a new GameObject will be created with the script attached. This new object becomes the main instance.
 
 If Auto-Generation is enabled, you also have the option to create the singleton from a prefab instead of an empty GameObject. This prefab must have the script attached **at the root of the prefab**, as the children are not searched when getting the singleton component.
+
+## Debugger
+
+As of version 1.1.0, you can find the debugger menu under `Window > Analysis > Singleton Debugger`.
+This screen will allow you to view the main instance of all singletons in your project.
+
+![Debugger Example](images/debugger_example.png)
+
+Each row in the list displays the singleton type, followed by a field which displays the current main instance of that type.
+This field can be use to assign a different instance as main.
+Any changes made to this field will not be applied until the user presses the "Apply" button, upon which the new instance will be assigned.
+Changes made through the debug menu **does not** bypass the logic configured in the project settings, thus instances may be destroyed when changes are applied.
 
 # Technical Details
 
@@ -110,10 +128,11 @@ public class ClassC : ClassA { }
 ## Requirements
 - Unity version 6.0 or greater.
 
-This package depends on Unity's UI Toolkit for the project settings page.
+This package depends on Unity's UI Toolkit for the project settings page and debugger window.
 
 ## Revision History
 |Date|Reason|
 |---|---|
 June 14th, 2026|Created document.
 June 15th, 2026|Added known limitations and expanded usage.
+June 16th, 2026|Added info about Destroy Others During and Debugger window.
