@@ -1,7 +1,7 @@
 {
   "name": "com.jonathan-dodds.singletons",
   "displayName": "Singletons",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "unity": "6000.0",
   "description": "An implementation of the Singleton programming pattern for your Unity project.\n\nA singleton is a type of object that acts as a single point of governance for game system, typically implemented using a script with a static field assigned on Awake.\n\nThis singletons package provides a more robust solution with configurable behaviour for each type.\n\nCheck out the GitHub page to contribute or report an issue: https://github.com/JDoddsNAIT/Singletons",
   "author": {
