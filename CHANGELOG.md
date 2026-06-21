@@ -1,9 +1,5 @@
 # Change log
 
-## v1.1.1
-**Fixes**
-- Fixed an issue preventing installation via UPM.
-
 ## v1.1.0:
 **Features**
 - Added Debugger window. Allows the user to view and assign the main instance at any time.
@@ -18,6 +14,6 @@
 - Fixed an issue where singleton GameObjects were left behind after the component was automatically destroyed.
 
 ---
-## v1.0.0:
+v1.0.0:
 
 - Initial release
